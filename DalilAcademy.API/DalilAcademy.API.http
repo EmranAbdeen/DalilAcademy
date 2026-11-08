@@ -1,0 +1,6 @@
+@DalilAcademy.API_HostAddress = http://localhost:5172
+
+GET {{DalilAcademy.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

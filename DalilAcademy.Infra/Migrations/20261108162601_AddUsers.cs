@@ -11,6 +11,20 @@ namespace DalilAcademy.Infra.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AddColumn<int>(
+                name: "UserId",
+                table: "Students",
+                type: "integer",
+                nullable: true);
+
+            migrationBuilder.AddColumn<string>(
+                name: "Level",
+                table: "Courses",
+                type: "character varying(20)",
+                maxLength: 20,
+                nullable: false,
+                defaultValue: "");
+
             migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
@@ -27,17 +41,47 @@ namespace DalilAcademy.Infra.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Students_UserId",
+                table: "Students",
+                column: "UserId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Users_Email",
                 table: "Users",
                 column: "Email",
                 unique: true);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Students_Users_UserId",
+                table: "Students",
+                column: "UserId",
+                principalTable: "Users",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.SetNull);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Students_Users_UserId",
+                table: "Students");
+
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Students_UserId",
+                table: "Students");
+
+            migrationBuilder.DropColumn(
+                name: "UserId",
+                table: "Students");
+
+            migrationBuilder.DropColumn(
+                name: "Level",
+                table: "Courses");
         }
     }
 }

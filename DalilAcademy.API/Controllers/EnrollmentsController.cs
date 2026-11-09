@@ -1,8 +1,10 @@
-﻿using DalilAcademy.Core.Service;
+﻿using DalilAcademy.Core.Entities;
+using DalilAcademy.Core.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using static DalilAcademy.Core.DTOs.EnrollmentDto;
 
-// only calls EnrollAsync — the business rule lives in the service
 namespace DalilAcademy.API.Controllers
 {
     [Route("api/[controller]")]
@@ -16,6 +18,16 @@ namespace DalilAcademy.API.Controllers
             var enrollment = await enrollmentService.EnrollAsync(dto.StudentId, dto.CourseId);
 
             return StatusCode(StatusCodes.Status201Created, enrollment);
+        }
+
+        [Authorize(Roles = Roles.Student)]
+        [HttpGet("me")]
+        public async Task<IActionResult> GetMyCourses()
+        {
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            var result = await enrollmentService.GetMyCoursesAsync(userId);
+
+            return Ok(result);
         }
     }
 }

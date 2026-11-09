@@ -29,14 +29,12 @@ namespace DalilAcademy.Infra.Service
                 ?? throw new NotFoundException($"Student {id} was not found.");
             return student?.ToDto();
         }
-        public async Task<List<CourseResponseDto>> GetProfileAsync(int id)
+        public async Task<StudentResponseDto> GetMeAsync(int id)
         {
-            var student = await studentRepository.GetWithCoursesAsync(id)
-                ?? throw new NotFoundException($"Student {id} was not found.");
+            var student = await studentRepository.GetByUserIdAsync(id)
+                ?? throw new NotFoundException("Student profile was not found.");
 
-            return student.Enrollments
-                .Where(e => e.Course is not null)
-                .Select(e => e.Course!.ToDto()).ToList();
+            return student.ToDto();
         }
         public async Task<StudentResponseDto> CreateAsync(CreateStudentDto createStudentDto)
         {
@@ -46,7 +44,6 @@ namespace DalilAcademy.Infra.Service
             student.User = new User
             {
                 Email = createStudentDto.Email,
-                FullName = createStudentDto.FullName,
                 PasswordHash = passwordHasher.Hash(createStudentDto.Password)
             };
 

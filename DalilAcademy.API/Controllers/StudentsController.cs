@@ -10,6 +10,7 @@ using static DalilAcademy.Core.DTOs.StudentDto;
 namespace DalilAcademy.API.Controllers
 {
     // zero try/catch blocks — errors go to GlobalExceptionHandler
+    [Authorize(Roles = Roles.Admin)]
     [Route("api/[controller]")]
     [ApiController]
     public class StudentsController(IStudentService studentService) : ControllerBase
@@ -30,22 +31,6 @@ namespace DalilAcademy.API.Controllers
         {
             var student = await studentService.GetByIdAsync(id);
             return student is null ? NotFound() : Ok(student);
-        }
-
-        // profile
-        [HttpGet]
-        [Route("profile")]
-        [Authorize(Roles = Roles.Student)]
-        public async Task<ActionResult<StudentResponseDto>> GetProfile()
-        {
-            var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
-            if (!int.TryParse(user, out var userId))
-                return Unauthorized();
-
-            var student = await studentService.GetProfileAsync(userId);
-
-            return Ok(student);
         }
 
         //Create
@@ -79,6 +64,21 @@ namespace DalilAcademy.API.Controllers
         public async Task<ActionResult<List<CourseResponseDto>>> GetCourses(int id)
         {
             return Ok(await studentService.GetCoursesAsync(id));
+        }
+
+        // profile
+        [AllowAnonymous]
+        [HttpGet("me")]
+        public async Task<ActionResult<StudentResponseDto>> GetMe()
+        {
+            var user = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (!int.TryParse(user, out var userId))
+                return Unauthorized();
+
+            var student = await studentService.GetMeAsync(userId);
+
+            return Ok(student);
         }
     }
 }

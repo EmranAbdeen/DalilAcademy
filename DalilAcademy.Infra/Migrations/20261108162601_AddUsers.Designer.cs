@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace DalilAcademy.Infra.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20261107110917_AddUsers")]
+    [Migration("20261108162601_AddUsers")]
     partial class AddUsers
     {
         /// <inheritdoc />
@@ -125,9 +125,15 @@ namespace DalilAcademy.Infra.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
+                    b.Property<int?>("UserId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
                     b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.HasIndex("UserId")
                         .IsUnique();
 
                     b.ToTable("Students");
@@ -191,6 +197,16 @@ namespace DalilAcademy.Infra.Migrations
                     b.Navigation("Course");
 
                     b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("DalilAcademy.Core.Entities.Student", b =>
+                {
+                    b.HasOne("DalilAcademy.Core.Entities.User", "User")
+                        .WithOne()
+                        .HasForeignKey("DalilAcademy.Core.Entities.Student", "UserId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("DalilAcademy.Core.Entities.Course", b =>

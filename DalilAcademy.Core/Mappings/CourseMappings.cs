@@ -7,7 +7,7 @@ namespace DalilAcademy.Core.Mappings
     {
         public static CourseResponseDto ToDto(this Course course) // Using `this` makes a method an extension method, such as those available in `Microsoft.EntityFrameworkCore`
         {
-            return new CourseResponseDto(course.Id, course.Title, course.Price, course.Level, course.Instructor?.FullName);
+            return new CourseResponseDto(course.Id, course.Title, course.Price, course.Instructor?.FullName);
         }
 
         public static Course ToEntity(this CreateCourseDto dto)
@@ -16,7 +16,6 @@ namespace DalilAcademy.Core.Mappings
             {
                 Title = dto.Title,
                 Price = dto.price,
-                Level =dto.Level,
                 InstructorId = dto.InstructorId
             };
         }
@@ -26,7 +25,6 @@ namespace DalilAcademy.Core.Mappings
             {
                 course.Title = dto.Title;
                 course.Price = dto.price;
-                course.Level = dto.Level;
             }
         }
     }

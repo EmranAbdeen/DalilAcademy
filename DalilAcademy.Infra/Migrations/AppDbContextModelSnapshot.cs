@@ -33,11 +33,6 @@ namespace DalilAcademy.Infra.Migrations
                     b.Property<int>("InstructorId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Level")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("character varying(20)");
-
                     b.Property<decimal>("Price")
                         .HasPrecision(10, 2)
                         .HasColumnType("numeric(10,2)");
@@ -122,6 +117,11 @@ namespace DalilAcademy.Infra.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
                     b.Property<int?>("UserId")
                         .HasColumnType("integer");
 
@@ -148,11 +148,6 @@ namespace DalilAcademy.Infra.Migrations
                         .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
-
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
@@ -206,7 +201,7 @@ namespace DalilAcademy.Infra.Migrations
                     b.HasOne("DalilAcademy.Core.Entities.User", "User")
                         .WithOne()
                         .HasForeignKey("DalilAcademy.Core.Entities.Student", "UserId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("User");
                 });

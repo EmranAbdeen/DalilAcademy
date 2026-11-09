@@ -59,7 +59,6 @@ namespace DalilAcademy.Infra.Data
                     context.Set<User>().Add(new User
                     {
                         Email = "admin@dalil.jo",
-                        FullName = "Admin User",
                         Role = Roles.Admin,
                         PasswordHash = BCrypt.Net.BCrypt.HashPassword("Admin@123") // wrapped in a class later
                     });

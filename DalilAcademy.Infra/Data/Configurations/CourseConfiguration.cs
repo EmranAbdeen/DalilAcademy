@@ -12,7 +12,6 @@ namespace DalilAcademy.Infra.Data.Configurations
             builder.Property(c => c.Title).IsRequired().HasMaxLength(200);
             builder.HasIndex(c => c.Title).IsUnique();
             builder.Property(c => c.Price).HasPrecision(10, 2);
-            builder.Property(c => c.Level).HasConversion<string>().IsRequired().HasMaxLength(20);
             builder.HasOne(c => c.Instructor)
             .WithMany(i => i.Courses)
             .HasForeignKey(c => c.InstructorId)

@@ -7,13 +7,14 @@ namespace DalilAcademy.Core.Mappings
     {
         public static StudentResponseDto ToDto(this Student student)
         {
-            return new StudentResponseDto(student.Id, student.FullName, student.Email);
+            return new StudentResponseDto(student.Id, student.FullName,student.PhoneNumber, student.Email);
         }
         public static Student ToEntity(this CreateStudentDto createStudentDto)
         {
             return new Student
             {
                 FullName = createStudentDto.FullName,
+                PhoneNumber = createStudentDto.PhoneNumber,
                 Email = createStudentDto.Email
             };
         }
@@ -21,6 +22,7 @@ namespace DalilAcademy.Core.Mappings
         {
             {
                 student.FullName = updateStudentDto.FullName;
+                student.PhoneNumber = updateStudentDto.PhoneNumber;
                 student.Email = updateStudentDto.Email;
             }
         }

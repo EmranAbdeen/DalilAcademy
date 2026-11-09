@@ -9,6 +9,7 @@ namespace DalilAcademy.Core.Repository
         Task<PagedResult<StudentResponseDto>> GetPagedResult(int page, int pageSize);
         Task<Student?> GetByIdAsync(int id);
         Task<Student?> GetByUserIdAsync(int userId);
+        Task AddAsync(Student student);
         Task<Student?> GetWithCoursesAsync(int id);
         Task<Student> CreateAsync(Student student);
         Task UpdateAsync(Student student);

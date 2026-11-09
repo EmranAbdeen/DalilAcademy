@@ -7,7 +7,7 @@ using static DalilAcademy.Core.Exceptions.AppExceptions;
 
 namespace DalilAcademy.Infra.Service
 {
-    public class AuthService(IUserRepository users, IPasswordHasher hasher, ITokenService tokens) : IAuthService
+    public class AuthService(IUserRepository users, IStudentRepository students, IPasswordHasher hasher, ITokenService tokens) : IAuthService
     {
         public async Task<LoginResponseDto> LoginAsync(LoginRequestDto dto)
         {
@@ -21,21 +21,36 @@ namespace DalilAcademy.Infra.Service
             return new LoginResponseDto(token, expiresAt);
         }
 
-        public async Task RegisterAsync(RegisterRequestDto dto)
+        public async Task<RegisterResponseDto> RegisterAsync(RegisterRequestDto dto)
         {
             var user = await users.GetByEmailAsync(dto.Email);
             if (user is not null)
-                throw new ConflictException("A user with this email already exists.");
+                throw new ConflictException("Email already exists.");
 
             var passwordHash = hasher.Hash(dto.Password);
+            
+            // User
             var newUser = new User
             {
-                FullName = dto.FullName,
                 Email = dto.Email,
                 PasswordHash = passwordHash,
                 Role = Roles.Student            // Default role is Student
             };
             await users.AddAsync(newUser);
+
+            // Student
+            var student = new Student
+            {
+                FullName = dto.FullName,
+                Email = dto.Email,
+                PhoneNumber = dto.PhoneNumber,
+                UserId = newUser.Id,
+            };
+            await students.AddAsync(student);
+
+            // Generate token
+            var (token, expiresAt) = tokens.CreateToken(newUser);
+            return new RegisterResponseDto(token, expiresAt);
         }
     }
 }

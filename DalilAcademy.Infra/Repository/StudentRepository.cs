@@ -19,7 +19,7 @@ namespace DalilAcademy.Infra.Repository
                 .OrderBy(s => s.Id)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
-                .Select(s => new StudentResponseDto(s.Id, s.FullName, s.Email)).ToListAsync();
+                .Select(s => new StudentResponseDto(s.Id, s.FullName,s.PhoneNumber, s.Email)).ToListAsync();
 
             return new PagedResult<StudentResponseDto>(items, page, pageSize, total);
         }
@@ -30,6 +30,11 @@ namespace DalilAcademy.Infra.Repository
         public async Task<Student?> GetByUserIdAsync(int userId)
         {
             return await db.Students.FirstOrDefaultAsync(s => s.UserId == userId);
+        }
+        public async Task AddAsync(Student student)
+        {
+            db.Students.Add(student);
+            await db.SaveChangesAsync();
         }
         public async Task<Student?> GetWithCoursesAsync(int id)
         {

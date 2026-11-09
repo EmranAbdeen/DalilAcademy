@@ -5,14 +5,18 @@
 namespace DalilAcademy.Infra.Migrations
 {
     /// <inheritdoc />
-    public partial class AddCourseLevel : Migration
+    public partial class AddPhone : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
+            migrationBuilder.DropColumn(
                 name: "Level",
-                table: "Courses",
+                table: "Courses");
+
+            migrationBuilder.AddColumn<string>(
+                name: "PhoneNumber",
+                table: "Students",
                 type: "character varying(20)",
                 maxLength: 20,
                 nullable: false,
@@ -23,8 +27,16 @@ namespace DalilAcademy.Infra.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
+                name: "PhoneNumber",
+                table: "Students");
+
+            migrationBuilder.AddColumn<string>(
                 name: "Level",
-                table: "Courses");
+                table: "Courses",
+                type: "character varying(20)",
+                maxLength: 20,
+                nullable: false,
+                defaultValue: "");
         }
     }
 }

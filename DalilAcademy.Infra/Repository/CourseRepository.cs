@@ -40,7 +40,7 @@ namespace DalilAcademy.Infra.Repository
                 .OrderBy(c => c.Id)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
-                .Select(c => new CourseResponseDto(c.Id, c.Title, c.Price, c.Level, c.Instructor!.FullName))
+                .Select(c => new CourseResponseDto(c.Id, c.Title, c.Price, c.Instructor!.FullName))
                 .ToListAsync();
 
             return new PagedResult<CourseResponseDto>(items, page, pageSize, total);

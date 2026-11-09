@@ -5,22 +5,14 @@
 namespace DalilAcademy.Infra.Migrations
 {
     /// <inheritdoc />
-    public partial class LinkStudentsToUsers : Migration
+    public partial class ChangeDeleteBehaviorToCascade : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<int>(
-                name: "UserId",
-                table: "Students",
-                type: "integer",
-                nullable: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Students_UserId",
-                table: "Students",
-                column: "UserId",
-                unique: true);
+            migrationBuilder.DropForeignKey(
+                name: "FK_Students_Users_UserId",
+                table: "Students");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Students_Users_UserId",
@@ -28,7 +20,7 @@ namespace DalilAcademy.Infra.Migrations
                 column: "UserId",
                 principalTable: "Users",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.SetNull);
+                onDelete: ReferentialAction.Cascade);
         }
 
         /// <inheritdoc />
@@ -38,13 +30,13 @@ namespace DalilAcademy.Infra.Migrations
                 name: "FK_Students_Users_UserId",
                 table: "Students");
 
-            migrationBuilder.DropIndex(
-                name: "IX_Students_UserId",
-                table: "Students");
-
-            migrationBuilder.DropColumn(
-                name: "UserId",
-                table: "Students");
+            migrationBuilder.AddForeignKey(
+                name: "FK_Students_Users_UserId",
+                table: "Students",
+                column: "UserId",
+                principalTable: "Users",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.SetNull);
         }
     }
 }

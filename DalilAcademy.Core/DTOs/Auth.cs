@@ -4,6 +4,7 @@
     {
         public record LoginRequestDto(string Email, string Password);
         public record LoginResponseDto(string Token, DateTime ExpiresAt);
-        public record RegisterRequestDto(string Email, string FullName, string Password);
+        public record RegisterRequestDto(string Email, string FullName, string PhoneNumber, string Password);
+        public record RegisterResponseDto(string Token, DateTime ExpiresAt);
     }
 }

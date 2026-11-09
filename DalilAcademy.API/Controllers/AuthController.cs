@@ -22,8 +22,8 @@ namespace DalilAcademy.API.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> Register(RegisterRequestDto dto)
         {
-            await authService.RegisterAsync(dto);
-            return Ok();
+            var result = await authService.RegisterAsync(dto);
+            return Ok(result);
         }
     }
 }

@@ -14,12 +14,13 @@ namespace DalilAcademy.Infra.Data.Configurations
             builder.HasKey(s => s.Id);
             builder.Property(s => s.FullName).IsRequired().HasMaxLength(200);
             builder.Property(s => s.Email).IsRequired().HasMaxLength(255);
+            builder.Property(s => s.PhoneNumber).HasMaxLength(20);
             builder.HasIndex(s => s.Email).IsUnique();
             builder.HasIndex(s => s.UserId).IsUnique();
             builder.HasOne(s => s.User)
                 .WithOne()
                 .HasForeignKey<Student>(s => s.UserId)
-                .OnDelete(DeleteBehavior.SetNull); // or DeleteBehavior.Restrict, depending on your requirements
+                .OnDelete(DeleteBehavior.Cascade); // or DeleteBehavior.SetNull, depending on your requirements
         }
     }
 }

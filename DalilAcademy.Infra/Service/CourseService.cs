@@ -6,7 +6,6 @@ using DalilAcademy.Core.Storage;
 using FluentValidation;
 using static DalilAcademy.Core.DTOs.CourseDto;
 using static DalilAcademy.Core.Exceptions.AppExceptions;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace DalilAcademy.Infra.Service
 {

@@ -2,23 +2,21 @@ using DalilAcademy.Core.DTOs;
 using DalilAcademy.Core.Mappings;
 using DalilAcademy.Core.Repository;
 using DalilAcademy.Core.Service;
+using DalilAcademy.Core.Storage;
 using FluentValidation;
 using static DalilAcademy.Core.DTOs.CourseDto;
 using static DalilAcademy.Core.Exceptions.AppExceptions;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace DalilAcademy.Infra.Service
 {
     public class CourseService(
         ICourseRepository courseRepository,
         IValidator<CreateCourseDto> createValidator,
-        IValidator<UpdateCourseDto> updateValidator)
+        IValidator<UpdateCourseDto> updateValidator,
+        IImageService images)
         : ICourseService
     {
-        //public Task<List<CourseResponseDto>> GetAllAsync()
-        //{
-        //    return courseRepository.GetAllAsync();
-        //    //return course.Select(c => c.ToDto()).ToList();
-        //}
         public Task<PagedResult<CourseResponseDto>> GetPageAsync(int page, int pageSize, decimal? minPrice, decimal? maxPrice)
         {
             return courseRepository.GetPageAsync(page, pageSize, minPrice, maxPrice);
@@ -42,20 +40,27 @@ namespace DalilAcademy.Infra.Service
 
             return created.ToDto();
         }
-        public async Task UpdateAsync(int id, UpdateCourseDto updateCourseDto)
+        public async Task UpdateAsync(int id, UpdateCourseDto dto)
         {
-            await updateValidator.ValidateAndThrowAsync(updateCourseDto);
+            await updateValidator.ValidateAndThrowAsync(dto);
 
             var course = await courseRepository.GetByIdAsync(id)
                 ?? throw new NotFoundException($"Course {id} was not found.");
 
-            course.UpdateFromDto(updateCourseDto);
-            await courseRepository.UpdateAsync(course);                                 // duplicate title → 409
+            var oldImage = course.ImageUrl;
+            course.UpdateFromDto(dto);
+            await courseRepository.UpdateAsync(course);                                 // duplicate title → 409, database first (saves inside)
+
+            if (oldImage != dto.ImageUrl)
+                images.DeleteCourseImage(oldImage);                                     // then the old file
         }
         public async Task DeleteAsync(int id)
         {
-            if(!await courseRepository.DeleteAsync(id))
-                throw new NotFoundException($"Course {id} was not found.");
+            var course = await courseRepository.GetByIdAsync(id)
+                ?? throw new NotFoundException($"Course {id} was not found.");
+
+            await courseRepository.DeleteAsync(id);                                     // database first (saves inside)
+            images.DeleteCourseImage(course.ImageUrl);                                  // then the file
         }
     }
 }

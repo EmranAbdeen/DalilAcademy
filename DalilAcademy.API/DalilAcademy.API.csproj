@@ -27,4 +27,8 @@
     <ProjectReference Include="..\DalilAcademy.Infra\DalilAcademy.Infra.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\courses\" />
+  </ItemGroup>
+
 </Project>

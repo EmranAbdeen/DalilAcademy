@@ -2,17 +2,18 @@ using DalilAcademy.API.Middleware;
 using DalilAcademy.Core.Repository;
 using DalilAcademy.Core.Security;
 using DalilAcademy.Core.Service;
+using DalilAcademy.Core.Storage;
 using DalilAcademy.Core.Validators;
 using DalilAcademy.Infra.Data;
 using DalilAcademy.Infra.Repository;
 using DalilAcademy.Infra.Security;
 using DalilAcademy.Infra.Service;
+using DalilAcademy.Infra.Storage;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
-using System.Reflection.Metadata;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -66,6 +67,7 @@ builder.Services.AddScoped<ICourseService, CourseService>();
 builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddScoped<IEnrollmentService, EnrollmentService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IImageService, ImageService>();
 
 // Security
 builder.Services.AddSingleton<IPasswordHasher, BcryptPasswordHasher>();
@@ -123,6 +125,7 @@ if (app.Environment.IsDevelopment())
 app.UseExceptionHandler();
 app.UseHttpsRedirection();
 
+app.UseStaticFiles(); // for wwwroot folder
 app.UseAuthentication();
 app.UseAuthorization();
 

@@ -10,12 +10,12 @@ using static DalilAcademy.Core.DTOs.StudentDto;
 namespace DalilAcademy.API.Controllers
 {
     // zero try/catch blocks — errors go to GlobalExceptionHandler
-    [Authorize(Roles = Roles.Admin)]
     [Route("api/[controller]")]
     [ApiController]
     public class StudentsController(IStudentService studentService) : ControllerBase
     {
         // GetAll
+        [Authorize(Roles = Roles.Admin)]
         [HttpGet]
         public async Task<ActionResult<PagedResult<StudentResponseDto>>> GetAll([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
@@ -25,6 +25,7 @@ namespace DalilAcademy.API.Controllers
         }
 
         // GetById
+        [Authorize(Roles = Roles.Admin)]
         [HttpGet]
         [Route("{id:int}")]
         public async Task<ActionResult<StudentResponseDto>> GetById(int id)
@@ -34,6 +35,7 @@ namespace DalilAcademy.API.Controllers
         }
 
         //Create
+        [Authorize(Roles = Roles.Admin)]
         [HttpPost]
         public async Task<ActionResult<StudentResponseDto>> Create(CreateStudentDto createStudentDto)
         {
@@ -42,6 +44,7 @@ namespace DalilAcademy.API.Controllers
         }
 
         // Update
+        [Authorize(Roles = Roles.Admin)]
         [HttpPut]
         [Route("{id:int}")]
         public async Task<IActionResult> Update(int id, UpdateStudentDto updateStudentDto)
@@ -51,6 +54,7 @@ namespace DalilAcademy.API.Controllers
         }
 
         //Delete
+        [Authorize(Roles = Roles.Admin)]
         [HttpDelete]
         [Route("{id:int}")]
         public async Task<IActionResult> Delete(int id)
@@ -59,6 +63,7 @@ namespace DalilAcademy.API.Controllers
                 return NoContent();
         }
 
+        [Authorize(Roles = Roles.Admin)]
         [HttpGet]
         [Route("{id:int}/courses")]
         public async Task<ActionResult<List<CourseResponseDto>>> GetCourses(int id)
@@ -67,7 +72,7 @@ namespace DalilAcademy.API.Controllers
         }
 
         // profile
-        [AllowAnonymous]
+        [Authorize(Roles = Roles.Student)]
         [HttpGet("me")]
         public async Task<ActionResult<StudentResponseDto>> GetMe()
         {

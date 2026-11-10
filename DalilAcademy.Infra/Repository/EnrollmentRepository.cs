@@ -40,7 +40,8 @@ namespace DalilAcademy.Infra.Repository
                     e.Course!.Id,
                     e.Course.Title,
                     e.Course.Price,
-                    e.Course.Instructor!.FullName
+                    e.Course.Instructor!.FullName,
+                    e.Course.ImageUrl
                     ))
                 .ToListAsync();
         }

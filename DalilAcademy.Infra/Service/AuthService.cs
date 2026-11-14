@@ -11,7 +11,10 @@ namespace DalilAcademy.Infra.Service
     {
         public async Task<LoginResponseDto> LoginAsync(LoginRequestDto dto)
         {
-            var user = await users.GetByEmailAsync(dto.Email);
+            // ToLowerInvariant --> Unicode
+            // ToLower --> ASCII code
+            var email = dto.Email.Trim().ToLowerInvariant();
+            var user = await users.GetByEmailAsync(email);
 
             // Same message for "no such user" and "wrong password" — never reveal which
             if (user is null || !hasher.Verify(dto.Password, user.PasswordHash))
@@ -23,7 +26,8 @@ namespace DalilAcademy.Infra.Service
 
         public async Task<RegisterResponseDto> RegisterAsync(RegisterRequestDto dto)
         {
-            var user = await users.GetByEmailAsync(dto.Email);
+            var email = dto.Email.Trim().ToLowerInvariant();
+            var user = await users.GetByEmailAsync(email);
             if (user is not null)
                 throw new ConflictException("Email already exists.");
 
@@ -32,7 +36,7 @@ namespace DalilAcademy.Infra.Service
             // User
             var newUser = new User
             {
-                Email = dto.Email,
+                Email = email,
                 PasswordHash = passwordHash,
                 Role = Roles.Student            // Default role is Student
             };
@@ -42,7 +46,7 @@ namespace DalilAcademy.Infra.Service
             var student = new Student
             {
                 FullName = dto.FullName,
-                Email = dto.Email,
+                Email = email,
                 PhoneNumber = dto.PhoneNumber,
                 UserId = newUser.Id,
             };

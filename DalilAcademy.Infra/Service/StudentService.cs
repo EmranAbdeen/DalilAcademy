@@ -40,14 +40,10 @@ namespace DalilAcademy.Infra.Service
         {
             await createValidator.ValidateAndThrowAsync(createStudentDto);                  // 400
 
-            var email = createStudentDto.Email.Trim().ToLowerInvariant();
-
             var student = createStudentDto.ToEntity();
-            student.Email = email;
-
             student.User = new User
             {
-                Email = email,
+                Email = createStudentDto.Email,
                 PasswordHash = passwordHasher.Hash(createStudentDto.Password)
             };
 

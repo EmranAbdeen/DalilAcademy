@@ -21,7 +21,6 @@ namespace DalilAcademy.Infra.Service
         public async Task<PagedResult<StudentResponseDto>> GetPagedResult(int page, int pageSize)
         {
             return await studentRepository.GetPagedResult(page, pageSize);
-            //return student.Select(s => s.ToDto()).ToList();
         }
         public async Task<StudentResponseDto?> GetByIdAsync(int id)
         {
@@ -40,10 +39,14 @@ namespace DalilAcademy.Infra.Service
         {
             await createValidator.ValidateAndThrowAsync(createStudentDto);                  // 400
 
+            var email = createStudentDto.Email.Trim().ToLowerInvariant();
+
             var student = createStudentDto.ToEntity();
+            student.Email = email;
+
             student.User = new User
             {
-                Email = createStudentDto.Email,
+                Email = email,
                 PasswordHash = passwordHasher.Hash(createStudentDto.Password)
             };
 

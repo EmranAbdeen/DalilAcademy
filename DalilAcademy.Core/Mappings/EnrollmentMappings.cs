@@ -13,7 +13,8 @@ namespace DalilAcademy.Core.Mappings
                 enrollment.Student?.FullName ?? string.Empty,
                 enrollment.CourseId,
                 enrollment.Course?.Title ?? string.Empty,
-                enrollment.EnrolledAt
+                enrollment.EnrolledAt,
+                enrollment.status
             );
         }
     }

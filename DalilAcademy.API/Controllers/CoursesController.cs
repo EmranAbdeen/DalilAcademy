@@ -2,6 +2,7 @@ using DalilAcademy.Core.DTOs;
 using DalilAcademy.Core.Entities;
 using DalilAcademy.Core.Service;
 using DalilAcademy.Core.Storage;
+using DalilAcademy.Infra.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static DalilAcademy.Core.DTOs.CourseDto;
@@ -11,7 +12,7 @@ namespace DalilAcademy.API.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class CoursesController(ICourseService courseService, IImageService images) : ControllerBase
+    public class CoursesController(ICourseService courseService, IImageService images, IEnrollmentService enrollmentService) : ControllerBase
     {
         // Inject Service Layer (CourseService)
         //================================================================
@@ -97,6 +98,14 @@ namespace DalilAcademy.API.Controllers
             await using var stream = file.OpenReadStream();
             var url = await images.SaveCourseImageAsync(stream, file.FileName, file.Length);
             return Ok(new { imageUrl = url });
+        }
+
+        [Authorize(Roles = Roles.Admin)]
+        [HttpGet("{courseId}/students")]
+        public async Task<IActionResult> GetPaidStudents(int courseId)
+        {
+            var result = await enrollmentService.GetPaidStudentsByCourseIdAsync(courseId);
+            return Ok(result);
         }
     }
 }

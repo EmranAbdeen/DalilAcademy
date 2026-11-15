@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using DalilAcademy.Core.Enums;
 
 namespace DalilAcademy.Core.Entities
 {
@@ -12,5 +10,6 @@ namespace DalilAcademy.Core.Entities
         public int StudentId { get; set; }
         public Student? Student { get; set; }
         public DateTime EnrolledAt { get; set; }
+        public EnrollmentStatus status { get; set; }
     }
 }

@@ -11,13 +11,29 @@ namespace DalilAcademy.API.Controllers
     [ApiController]
     public class EnrollmentsController(IEnrollmentService enrollmentService) : ControllerBase
     {
-        // 201 Created · 404 student/course not found · 409 already enrolled
+        [Authorize(Roles = Roles.Admin)]
         [HttpPost]
         public async Task<ActionResult<EnrollmentResponseDto>> Enroll(CreateEnrollmentDto dto)
         {
             var enrollment = await enrollmentService.EnrollAsync(dto.StudentId, dto.CourseId);
 
             return StatusCode(StatusCodes.Status201Created, enrollment);
+        }
+
+        [Authorize(Roles = Roles.Admin)]
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] UpdateEnrollmentDto dto)
+        {
+            var result = await enrollmentService.UpdateEnrollmentAsync(id, dto.CourseId);
+            return Ok(result);
+        }
+
+        [Authorize(Roles = Roles.Admin)]
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            await enrollmentService.DeleteEnrollmentAsync(id);
+            return NoContent();
         }
 
         [Authorize(Roles = Roles.Student)]

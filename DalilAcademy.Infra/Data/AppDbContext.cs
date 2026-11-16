@@ -1,9 +1,5 @@
 ﻿using DalilAcademy.Core.Entities;
-using DalilAcademy.Infra.Data;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace DalilAcademy.Infra.Data
 {
@@ -16,6 +12,7 @@ namespace DalilAcademy.Infra.Data
         public DbSet<Instructor> Instructors => Set<Instructor>();
         public DbSet<Enrollment> Enrollments => Set<Enrollment>();
         public DbSet<User> Users => Set<User>();
+        public DbSet<Payment> Payments => Set<Payment>();
 
         // Finds every IEntityTypeConfiguration<T> in this project
         protected override void OnModelCreating(ModelBuilder modelBuilder)

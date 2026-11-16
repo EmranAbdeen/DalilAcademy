@@ -11,5 +11,6 @@ namespace DalilAcademy.Core.Entities
         public Student? Student { get; set; }
         public DateTime EnrolledAt { get; set; }
         public EnrollmentStatus status { get; set; }
+        public List<Payment> Payments { get; set; }
     }
 }

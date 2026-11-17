@@ -91,6 +91,7 @@ namespace DalilAcademy.API.Controllers
             return NoContent();
         }
 
+        //UploadImage
         [HttpPost("upload-image")]
         [Authorize(Roles = Roles.Admin)]
         public async Task<ActionResult> UploadImage(IFormFile file)
@@ -100,6 +101,7 @@ namespace DalilAcademy.API.Controllers
             return Ok(new { imageUrl = url });
         }
 
+        //GetPaidStudents
         [Authorize(Roles = Roles.Admin)]
         [HttpGet("{courseId}/students")]
         public async Task<IActionResult> GetPaidStudents(int courseId)

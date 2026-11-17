@@ -69,13 +69,20 @@ builder.Services.AddScoped<IStudentService, StudentService>();
 builder.Services.AddScoped<IEnrollmentService, EnrollmentService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IImageService, ImageService>();
-builder.Services.AddScoped<IPaymentService, PaymentService>();
-
 builder.Services.AddHttpClient<ICurrencyService, CurrencyService>(client =>
 {
     client.BaseAddress = new Uri(
     $"{builder.Configuration["ExchangeRate:BaseUrl"]}{builder.Configuration["ExchangeRate:ApiKey"]}/");
 });
+
+builder.Services.AddScoped<IPaymentService, PaymentService>();
+builder.Services.AddHttpClient<IPaymentGateway, PayPalPaymentGateway>(
+    (serviceProvider, httpClient) =>
+    {
+        var configuration = serviceProvider.GetRequiredService<IConfiguration>();
+        var baseUrl = configuration["PayPal:BaseUrl"];
+        httpClient.BaseAddress = new Uri(baseUrl!);
+    });
 
 // Security
 builder.Services.AddSingleton<IPasswordHasher, BcryptPasswordHasher>();

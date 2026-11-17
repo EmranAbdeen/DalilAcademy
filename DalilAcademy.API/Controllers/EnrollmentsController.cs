@@ -9,7 +9,7 @@ namespace DalilAcademy.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EnrollmentsController(IEnrollmentService enrollmentService) : ControllerBase
+    public class EnrollmentsController(IEnrollmentService enrollmentService, IPaymentService paymentService) : ControllerBase
     {
         [Authorize(Roles = Roles.Admin)]
         [HttpPost]
@@ -42,6 +42,24 @@ namespace DalilAcademy.API.Controllers
         {
             var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
             var result = await enrollmentService.GetMyCoursesAsync(userId);
+
+            return Ok(result);
+        }
+
+        [Authorize(Roles = Roles.Admin)]
+        [HttpPost("{id:int}/pay")]
+        public async Task<IActionResult> Pay(int id)
+        {
+            var result = await paymentService.PayAsync(id);
+
+            return Ok(result);
+        }
+
+        [Authorize(Roles = Roles.Admin)]
+        [HttpPost("{id:int}/capture")]
+        public async Task<IActionResult> Capture(int id)
+        {
+            var result = await paymentService.CaptureAsync(id);
 
             return Ok(result);
         }

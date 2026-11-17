@@ -15,6 +15,8 @@ namespace DalilAcademy.API.Middleware
                 NotFoundException => (404, "Resource not found"),
                 ConflictException => (409, "Conflict"),
                 InvalidFileException => (400, "Invalid file"),
+                PaymentFailedException => (400, "Payment failed"),
+                HttpRequestException => (503, "Payment provider unavailable"),
                 _ => (500, "An unexpected error occurred")
             };
 
@@ -27,7 +29,7 @@ namespace DalilAcademy.API.Middleware
             {
                 Status = status,
                 Title = title,
-                Detail = exception is NotFoundException or ConflictException or InvalidFileException or UnauthorizedAccessException ? exception.Message : null
+                Detail = exception is NotFoundException or ConflictException or InvalidFileException or PaymentFailedException or HttpRequestException or UnauthorizedAccessException ? exception.Message : null
             };
 
             if (exception is ValidationException ve)

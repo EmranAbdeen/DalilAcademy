@@ -16,11 +16,6 @@ namespace DalilAcademy.Infra.Service
             var clientId = configuration["PayPal:ClientId"];
             var secret = configuration["PayPal:ClientSecret"];
 
-            Console.WriteLine($"ClientId exists: {!string.IsNullOrWhiteSpace(clientId)}");
-            Console.WriteLine($"Secret exists: {!string.IsNullOrWhiteSpace(secret)}");
-            Console.WriteLine($"ClientId length: {clientId?.Length}");
-            Console.WriteLine($"Secret length: {secret?.Length}");
-
             if (string.IsNullOrWhiteSpace(clientId) || string.IsNullOrWhiteSpace(secret))
                 throw new InvalidOperationException("PayPal sandbox credentials are missing. Configure PayPal:ClientId and PayPal:ClientSecret in User Secrets.");
 

@@ -6,5 +6,6 @@ namespace DalilAcademy.Core.Service
     {
         Task<LoginResponseDto> LoginAsync(LoginRequestDto dto);
         Task<RegisterResponseDto> RegisterAsync(RegisterRequestDto dto);
+        Task<CreateInstructorResponseDto> CreateInstructorAsync(CreateInstructorRequestDto dto);
     }
 }

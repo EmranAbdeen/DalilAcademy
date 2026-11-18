@@ -38,8 +38,8 @@ namespace DalilAcademy.Infra.Data
                 // Instructors
                 if (!context.Set<Instructor>().Any())
                 {
-                    var ahmad = new Instructor { FullName = "Ahmad Saleh" };
-                    var lina = new Instructor { FullName = "Lina Haddad" };
+                    var ahmad = new Instructor { FullName = "Ahmad Saleh", Email = "ahmad@example.com" };
+                    var lina = new Instructor { FullName = "Lina Haddad", Email = "lina.instructor@dalil.jo" };
 
                     // Courses
                     context.Set<Course>().AddRange(

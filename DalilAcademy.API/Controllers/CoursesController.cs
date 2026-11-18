@@ -2,7 +2,6 @@ using DalilAcademy.Core.DTOs;
 using DalilAcademy.Core.Entities;
 using DalilAcademy.Core.Service;
 using DalilAcademy.Core.Storage;
-using DalilAcademy.Infra.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static DalilAcademy.Core.DTOs.CourseDto;

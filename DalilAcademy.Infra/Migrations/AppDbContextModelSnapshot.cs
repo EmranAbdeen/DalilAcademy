@@ -96,12 +96,26 @@ namespace DalilAcademy.Infra.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
                     b.Property<string>("FullName")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("character varying(200)");
 
+                    b.Property<int?>("UserId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Instructors");
                 });
@@ -247,6 +261,16 @@ namespace DalilAcademy.Infra.Migrations
                     b.Navigation("Course");
 
                     b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("DalilAcademy.Core.Entities.Instructor", b =>
+                {
+                    b.HasOne("DalilAcademy.Core.Entities.User", "User")
+                        .WithOne()
+                        .HasForeignKey("DalilAcademy.Core.Entities.Instructor", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("DalilAcademy.Core.Entities.Payment", b =>

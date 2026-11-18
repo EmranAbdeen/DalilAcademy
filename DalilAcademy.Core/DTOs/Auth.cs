@@ -6,5 +6,7 @@
         public record LoginResponseDto(string Token, DateTime ExpiresAt);
         public record RegisterRequestDto(string Email, string FullName, string PhoneNumber, string Password);
         public record RegisterResponseDto(string Token, DateTime ExpiresAt);
+        public record CreateInstructorRequestDto(string Email, string FullName, string Password);
+        public record CreateInstructorResponseDto(int Id, string Email, string FullName);
     }
 }

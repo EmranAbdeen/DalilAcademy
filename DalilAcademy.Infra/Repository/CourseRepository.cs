@@ -2,6 +2,7 @@ using DalilAcademy.Core.DTOs;
 using DalilAcademy.Core.Entities;
 using DalilAcademy.Core.Repository;
 using DalilAcademy.Infra.Data;
+using DalilAcademy.Core.Enums;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
 using static DalilAcademy.Core.DTOs.CourseDto;

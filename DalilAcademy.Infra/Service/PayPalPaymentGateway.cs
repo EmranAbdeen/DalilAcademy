@@ -38,6 +38,8 @@ namespace DalilAcademy.Infra.Service
 
             return document.RootElement.GetProperty("access_token").GetString()!;
         }
+
+        // 2.Create Order
         public async Task<CreatePaymentOrderResult> CreateOrderAsync(decimal amountInUsd)
         {
             var accessToken = await GetAccessTokenAsync();
